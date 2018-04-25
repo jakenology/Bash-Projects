@@ -1,0 +1,17 @@
+#!/bin/bash
+## Auto Task Agent 
+## Copyright 2018 Jayke Peters
+
+## Set Variables
+LOGTIMESTAMP=$(date +"%m%d%y%H%M%S")
+LOGFILETIMESTAMP=$(date +"%m%d%y")
+LOGFILE="$3/private/tmp/"$(basename $BASH_SOURCE)$LOGFILETIMESTAMP.log"
+
+## Functions
+logDate () {
+	/bin/echo $timestamp >
+}
+
+# Main Loop
+
+## "DO" the task...

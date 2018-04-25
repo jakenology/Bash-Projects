@@ -1,0 +1,27 @@
+#!/bin/sh
+### Empty Trash V1.0
+### Created by Jayke Peters
+
+## Variables
+empty="/bin/rm -rf ~/.Trash/*"
+
+## Functions
+function force {
+	echo NOW FORCE EMPTYING THE TRASH
+	$empty
+	echo THE TRASH IS NOW EMPTY
+	exit 0
+}
+
+"$@"
+
+# Display startEmpty Notification
+/bin/echo "*************************"
+/bin/echo NOW EMPTYING THE TRASH...
+##
+# Empty the trash
+/bin/rm -rf ~/.Trash/*
+##
+# Display emptyComplete Notification
+/bin/echo "*************************"
+/bin/echo STATUS: TRASH EMPTY

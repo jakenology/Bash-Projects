@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [[ $# -gt 0 ]]; then
+	echo ARGUMENTS WERE PASSED
+	ARGS="TRUE"
+
+	elif [[ $EUID -ne 0 ]]; then
+		echo PLEASE RUN THIS SCRIPT AS ROOT
+		say error
+		exit 1
+			else
+				NO ARGUMENTS PASSED
+fi
+fi  
+
+sayhi () {
+	say hi
+}
+
+sayno () {
+	say no
+}
+
+kk () {
+	say ooh
+}
+
+$1; $2; $3; $4; $5; $6; $7; $8; $9

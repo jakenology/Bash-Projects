@@ -1,0 +1,52 @@
+#!/bin/bash
+### AutoEmptyTrash Version 1.1
+### Copyright 2018 Jayke Peters
+
+## Set Variables
+AETVERSION="1.1"
+FORCE=""
+EMPTYTRASH=/bin/rm -rf ~/.Trash
+
+## Functions
+function version {
+	/bin/echo AutoEmptyTrash Version 1.1
+}
+
+function emptyTrash {
+	if [[ $@ == forc* ]] || [[ $@ == Forc* ]]; then
+		force="t"
+	elif [[ $force == "t" ]]; then
+		/bin/echo FORCE EMPTYING THE TRASH...
+		$EMPTYTRASH
+		/bin/echo "FORCE EMPTY SUCCESSFUL! :)"
+	else
+		/bin/echo EMPTYING THE TRASH...
+		$EMPTYTRASH
+		/bin/echo "EMPTY TRASH SUCCESSFUL!"
+	fi
+}
+
+#function start {
+#}
+
+#function stop {
+#}
+
+function int {
+	/bin/echo ARE YOU SURE YOU WANT TO CHANGE THE INTERVAL? [y/n]
+	# Check if arguments were already passed
+		if [ "$1" = "int" ] && [ "$2" -gt 9 ]; then
+		# Edit the Launch Agent
+		say hi
+	else
+		/bin/echo PLEASE PROVIDE AN INTEGER GREATER THAN 9
+	fi
+	read -r INTERVAL
+}
+
+## Check if any arguments were passed
+if [[ $# -eq 0 ]]; then
+	emptyTrash
+else
+	$1; $2
+fi

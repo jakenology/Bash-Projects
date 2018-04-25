@@ -1,0 +1,29 @@
+#!/bin/bash
+## COPYRIGHT 2018 JAYKE PETERS
+## AutoEmptyTrash Installer Script
+
+## Set variables
+WORKDIR=`dirname $0`
+LAUNCHAGS="$3/Users/$USER/Library/LaunchAgents"
+PLIST="us.jpits.AET.plist"
+LOCALBIN="/usr/local/bin"
+AET="$WORKDIR/AET"
+
+## Functions
+function moveFiles {
+	/bin/echo MOVING FILES
+	/bin/mv $WORKDIR/$PLIST $LAUNCHAGS
+	/bin/mv $AET $LOCALBIN
+}
+
+function start {
+	/bin/echo STARTING LAUNCHAGENT
+	/bin/launchctl load -w $LAUNCHAGS/$PLIST
+}
+
+function install {
+	moveFiles
+	start
+}
+
+install

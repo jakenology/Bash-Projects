@@ -1,0 +1,60 @@
+#!/bin/bash
+## LaunchControl Activation Script
+## Version 1.0
+## Copyright 2018 Jayke Peters
+
+## Set Variables
+currentuser=`/usr/bin/logname`
+work_dir=`dirname "$0"`
+license="com.soma-zone.LaunchControl.plist"
+license_destination="Library/Preferences"
+
+## Functions
+function systemCheck {
+	# Check for the license file on the system
+	if [ -f "$3/$license_destination/$license" ]; then
+		/bin/echo "Looks like you're already licensed."
+		exit 0
+	fi
+}
+
+function userCheck {
+	# Check for the license file in the users home folder
+	if [ -f "$3/Users/$currentuser/$license_destination/$license" ]; then
+		/bin/echo "Looks like you're already licensed."
+		exit 0
+	fi
+}
+
+function quit {
+	# Quit LaunchControl if it is open
+	/usr/bin/pkill LaunchControl
+}
+
+function open {
+	# Re-open LaunchControl
+	/usr/bin/open -a $3/*/LaunchCo*.app
+}
+
+function systemLicense {
+	# License the software for all users on the system.
+	systemCheck
+	quit
+	/bin/mv "$work_dir"/$license $3/$license_destination
+	open
+}
+
+function userLicense {
+	# License the software for current user only.
+	userCheck
+	quit
+	/bin/mv "$work_dir"/$license $3/Users/$currentuser/$license_destination
+	open
+}
+
+## Check if running as root
+if [[ $EUID -ne 0 ]]; then
+	userLicense
+else
+	systemLicense
+fi

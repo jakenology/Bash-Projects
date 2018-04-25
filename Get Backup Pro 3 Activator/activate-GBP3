@@ -1,0 +1,15 @@
+#!/bin/bash
+## Get Backup Pro 3 Activator
+## Copyright 2018 Jayke Peters
+
+## Define Variables
+currentuser=`/usr/bin/logname`
+work_dir=`dirname "$0"`
+license="GBPrefs.plist"
+license_destination="/Users/$currentuser/Library/Application Support/Get Backup 3"
+
+# Make folder for file
+mkdir "$license_destination"
+
+# Move the licensing file into place
+/bin/mv "$work_dir"/$license $3/"$license_destination"

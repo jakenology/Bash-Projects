@@ -1,0 +1,36 @@
+#!/bin/bash
+## Copright 2018 Jayke Peters
+## Mac Setup Script
+## This script will configure your mac to your system administrator's preferred settings.
+
+## Set Variables
+workdir=`dirname "$0"`
+loggedinuser="$USER"
+
+function script {
+	## Turn on the battery charging sound upon plug-in
+	/usr/bin/defaults write com.apple.PowerChime ChimeOnAllHardware -bool true; /usr/bin/open /System/Library/CoreServices/PowerChime.app &
+
+	## Hide the root user
+	/usr/bin/defaults write /Library/Preferences/com.apple.loginwindow SHOWOTHERUSERS_MANAGED -bool FALSE
+
+	## Disable the annyoing swipe to go back in Google Chrome
+	/usr/bin/defaults write $3/Users/$USER/Library/Preferences/com.google.Chrome.plist AppleEnableSwipeNavigateWithScrolls -bool FALSE; /usr/bin/pkill Google Chrome
+	/bin/sleep 2
+	/usr/bin/open $3/Applications/Google\ Chrome.app
+
+	## Hide the admin user (upon selection)
+	/usr/bin/dscl . create /Users/admin IsHidden 1; /usr/bin/killall SystemUIServer
+
+	## Reset the launchpad to defaults
+	/usr/bin/defaults write $3/Users/$USER/Library/Preferences/com.apple.dock ResetLaunchPad -bool true; /usr/bin/killall Dock
+}
+
+## Check if running as root, if not, exit with an error code "0"
+if [[ $EUID -ne 0 ]]; then
+	/bin/echo 'WARNING: THIS SCRIPT MUST BE RUN AS ROOT!!! Please use the command "sudo setup" and enter your password to complete setup successfully.'
+	exit 1
+else
+	script
+fi
+

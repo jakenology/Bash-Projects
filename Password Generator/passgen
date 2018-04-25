@@ -1,0 +1,61 @@
+#!/bin/bash
+## COPYRIGHT 2018 JAYKE PETERS
+## This script generates, stores, and shows a random password for any given user via the cli
+
+TIMESTAMP=$(date +"%m%d%y%H%M%S")
+LENGTH="6"
+PASSWORD=$(/usr/bin/openssl rand -base64 $LENGTH)
+PASSWORDFILEPATH="$3/private/tmp/"$(basename $BASH_SOURCE)$TIMESTAMP.log""
+
+## Functions
+function createFile {
+	/usr/bin/touch $3/private/tmp/"$(basename $BASH_SOURCE)$TIMESTAMP.log"
+}
+
+function displayFilepath {
+	/bin/echo HIDDEN PASSWORD FILEPATH: $PASSWORDFILEPATH
+}
+
+function askUser {
+	/bin/echo Would you like to reveal the hidden password file? Y/N
+	read userinput
+	if [[ $userinput == y* ]] || [[ $userinput == Y* ]]; then
+		/usr/bin/open $PASSWORDFILEPATH
+	else
+		exit 0
+	fi
+}
+
+function generatePassword {
+	createFile
+	/bin/echo $PASSWORD > $PASSWORDFILEPATH
+	/bin/echo 'GENERATED PASSWORD: '$PASSWORD''
+	/usr/bin/chflags hidden $PASSWORDFILEPATH
+	displayFilepath
+	askUser
+}
+
+function noStore {
+	/bin/echo GENERATED PASSWORD: $PASSWORD
+}
+
+function noHide {
+	createFile
+	/bin/echo $PASSWORD > $PASSWORDFILEPATH
+	/bin/echo 'GENERATED PASSWORD: '$PASSWORD''
+	/usr/bin/chflags nohidden $PASSWORDFILEPATH
+	displayFilepath
+}
+
+## Check if any parameters were passed, if not, generatePassword
+if [[ "$@" = "nostore" ]]; then
+	shift
+	/bin/echo PASSWORD WILL NOT BE STORED
+	noStore
+elif [[ $@ = "nohide" ]]; then
+	shift
+	noHide
+	askUser
+else
+	generatePassword
+fi

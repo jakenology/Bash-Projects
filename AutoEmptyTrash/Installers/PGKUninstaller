@@ -1,0 +1,48 @@
+#!/bin/bash
+## COPYRIGHT 2018 JAYKE PETERS
+## AutoTrashDelete Uninstaller Package Script
+
+## Set variables
+WORKDIR=`dirname $0`
+LAUNCHAGS="$3/Users/$USER/Library/LaunchAgents"
+PLIST="us.jpits.ATE.plist"
+LOCALBIN="/usr/local/bin"
+TRADEL="$WORKDIR/ATE"
+
+## Functions
+function stop {
+	
+	if [ -r $LAUNCHAGS/$PLIST ]; then
+		/bin/echo STOPPING LAUNCHAGENTS
+		/bin/launchctl unload -w $LAUNCHAGS/$PLIST#statements
+	else
+		removeFiles
+	fi
+}
+
+function removeFiles {
+	if [ -r $LAUNCHAGS/$PLIST ]; then
+		/bin/echo REMOVING LAUNCHAGENT
+		/bin/rm -rf $LAUNCHAGS/$PLIST
+	elif [ -f $LOCALBIN/tradel ]; then
+		/bin/echo REMOVING EXECUTABLE
+		/bin/rm -rf $LOCALBIN/ATE
+	fi
+}
+
+function placeFile {
+	if [ -r /Users/$USER/.Trash/FILE ]; then
+		exit 0
+	else	
+		/bin/echo PLACING EMTY FILE IN TRASH
+		/usr/bin/touch /Users/$USER/.Trash/FILE
+	fi	
+}
+
+function uninstall {
+	stop
+	removeFiles
+	placeFile
+}
+
+uninstall

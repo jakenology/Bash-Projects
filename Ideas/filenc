@@ -1,0 +1,15 @@
+#!/bin/bash
+## COPYRIGHT 2018 JAYKE PETERS
+## This script will encrypt specified file(s) with the specified password using openssl
+
+## Set variables
+
+## Functions
+function encrypt {
+	/usr/bin/openssl 
+}
+
+function encryptFiles {
+	encrypt
+}
+## 

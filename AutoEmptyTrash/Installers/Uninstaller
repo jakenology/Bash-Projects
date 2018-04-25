@@ -1,0 +1,45 @@
+#!/bin/bash
+## COPYRIGHT 2018 JAYKE PETERS
+## AutoEmptyTrash Uninstaller
+
+## Set variables
+WORKDIR=`dirname "$0"`
+LAUNCHAGS="$3/Users/$USER/Library/LaunchAgents"
+PLIST="us.jpits.AET.plist"
+LOCALBIN="/usr/local/bin"
+
+## Functions
+function stop {
+	if [ -f $LAUNCHAGS/$PLIST ]; then
+		/bin/echo STOPPING LAUNCHAGENTS
+		/bin/launchctl unload -w $LAUNCHAGS/$PLIST
+	fi
+}
+
+function removeFiles {
+	if [ -f $LAUNCHAGS/$PLIST ]; then
+		/bin/echo REMOVING LAUNCHAGENT
+		/bin/rm $LAUNCHAGS/$PLIST
+	elif [ -f $LOCALBIN/AET ]; then
+		/bin/echo REMOVING EXECUTABLE
+		/bin/rm $LOCALBIN/AET
+	fi
+}
+
+function placeFile {
+	if [ -f /Users/$USER/.Trash/FILE ]; then
+		/bin/echo THIS SCRIPT HAS ALREADY BEEN RUN
+		exit 0
+	else	
+		/bin/echo PLACING EMTY FILE IN TRASH
+		/usr/bin/touch /Users/$USER/.Trash/FILE
+	fi	
+}
+
+function uninstall {
+	stop
+	removeFiles
+	placeFile
+}
+
+uninstall

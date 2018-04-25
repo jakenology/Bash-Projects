@@ -1,0 +1,92 @@
+#!/bin/bash
+## AutoEmptyTrash Version 1.2
+## Copyright 2018 Jayke Peters
+
+## Set Variables
+args=("$@")
+AETVERSION="1.2"
+currentuser=`/usr/bin/logname`
+FORCE=false
+
+## Functions
+function badArgument {
+	/bin/echo '$arg' IS NOT A VALID ARGUMENT! Use "-help" for more info.
+	exit 0
+}
+
+function welcomeMessage {
+	/bin/echo Welcome to AutoEmptyTrash Version 1.2. To start, just use the command "aet" or aet 'MORE {OPTIONS}' 
+	exit 0
+}
+
+function version {
+	/bin/echo AutoEmptyTrash "$AETVERSION"
+	/bin/echo Copright 2018 Jayke Peters
+	/bin/echo THANKS FOR USING AUTOEMPTYTRASH!!!
+	exit 0
+}
+
+function setInt {
+	if [[ $arg = 10 ]]; then
+		say "$arg"
+	fi
+	# Edit the Launch Agent
+	#/bin/echo ARE YOU SURE YOU WANT TO CHANGE THE INTERVAL? [y/n]
+	#read -r INTERVAL
+	#say "$INTERVAL"
+	exit 0
+}
+
+function emptyTrash {
+	if [[ $force == "true" ]]; then
+		/bin/echo FORCE EMPTYING THE TRASH...
+		/bin/rm -rf $3/Users/$currentuser/.Trash
+		/bin/echo "FORCE EMPTY SUCCESSFUL! :)"
+	else
+		/bin/echo EMPTYING THE TRASH...
+		/bin/rm -rf /$3/Users/$currentuser/.Trash/*
+		/bin/echo "EMPTY TRASH SUCCESSFUL!"
+	fi
+}
+
+function errorMessage {
+	/bin/echo AN ERROR OCCURED!!!
+	exit 1
+}
+
+## Evaluate command-line arguments
+if [[ $# = 0 ]]; then
+    emptyTrash
+else
+    while [[ $# > 0 ]]
+    do
+    case "$1" in
+        *Help|*help)
+        welcomeMessage
+            ;;
+        *V|*v|*Version|*version)
+		version
+		shift
+        ;;
+       	*time|*int|*T|*t|*I|*i)
+		arg=($2)
+		setInt
+		shift 2
+		;;
+		*force|*Force)
+		force=true
+		shift
+		;;
+        -*|--*)
+		arg='$1'
+            ;;
+        *)
+		arg='$1'
+			;;
+    esac
+    shift
+    done
+    emptyTrash
+fi
+
+exit 0

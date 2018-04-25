@@ -1,0 +1,18 @@
+#!/bin/bash
+
+function getProcess {
+	process="$(xmllint --xpath "string(//applications)" "/Library/Application Support/JPITS/blacklist.xml")"
+}
+
+function killProcess {
+	for i in "${process[@]}"; do
+		pkill $i
+		echo $i
+	done
+
+}
+
+while true; do
+	getProcess
+	killProcess
+done

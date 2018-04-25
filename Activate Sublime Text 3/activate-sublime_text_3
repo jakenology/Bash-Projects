@@ -1,0 +1,17 @@
+#!/bin/bash
+## Sublime Text 3 Activation Script
+
+## Set Variables
+currentuser=`/usr/bin/logname`
+work_dir=`dirname "$0"`
+license="License.sublime_license"
+license_destination="Library/Application Support/Sublime Text 3/Local"
+
+## Quit Sublime Text 3 if it is open
+/usr/bin/pkill Sublime*
+
+## Move the license file into it's place
+/bin/mv "$work_dir"/$license $3/Users/$currentuser/"$license_destination"
+
+## Reopen Sublime Text 3 for the User
+/usr/bin/open -a $3/*/Sublime*.app

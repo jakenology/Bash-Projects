@@ -1,0 +1,31 @@
+#!/bin/bash
+## COPYRIGHT 2018 JAYKE PETERS
+## TrashDelete Installer
+
+## Set variables
+WORKDIR=`dirname "$0"`
+LAUNCHAGS="$3/Users/$USER/Library/LaunchAgents"
+PLIST="us.jpits.tradel.plist"
+LOCALBIN="/usr/local/bin"
+TRADEL="$WORKDIR/tradel"
+
+## Functions
+function moveFiles {
+	/bin/echo MOVING FILES
+	/bin/mv $WORKDIR/$PLIST $LAUNCHAGS
+	/bin/mv $TRADEL $LOCALBIN
+	sleep 1
+}
+
+function start {
+	/bin/echo STARTING LAUNCHAGENT
+	/bin/launchctl load -w $LAUNCHAGS/$PLIST
+	sleep 4
+}
+
+function install {
+	moveFiles
+	start
+}
+
+install
